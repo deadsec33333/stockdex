@@ -1,0 +1,48 @@
+# ===== Brand =====
+BRAND_NAME=stockdex
+# use a SEPARATE X account from the Solana bot, or the two bots will answer the same posts
+BOT_HANDLE=stockdexapp
+SITE_URL=
+
+# ===== X API (same app works; regenerate if you use a new account) =====
+X_BEARER_TOKEN=AAAAAAAAAAAAAAAAAAAAAPAZ%2FwEAAAAAXOG0X7f%2BnWIVFEnZ289ZiOTFeRQ%3DeHuLdEmrVC5PLXr4YjZjcNMQW5Ck0MsvMLWLE9wVdGYGSeCusV
+X_BOT_USER_ID=
+X_API_KEY=sqVuqQe6ydBVBOUxeZRjV8qsp
+X_API_SECRET=8FGIVYIV0wYy0mc04AETJISFYxSy70mdDntz9qp6kK9NsDfcC8
+X_ACCESS_TOKEN=
+X_ACCESS_SECRET=
+X_REPLY_ENABLED=false
+
+# ===== Supabase: this needs its OWN project, the tables differ from the Solana one =====
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# ===== Pinata (coin images) =====
+PINATA_JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI1YzljNWQ5OC1hYmE1LTQ5NjMtYWEzYS1kZjZlNDNiNmVlZjgiLCJlbWFpbCI6Im1lc2thdXNrYXM4MEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MSwiaWQiOiJGUkExIn0seyJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MSwiaWQiOiJOWUMxIn1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiMmU1MGMyZDBmYWJhZjQzM2Y2MTIiLCJzY29wZWRLZXlTZWNyZXQiOiIyZDQ2ZjdhNDRhMTExNDllMjIyYjM0MTA2NzI0ZjMzMTk4NjU4ZGE5YzcyODZhYmFkNzQzMDhlOTI4MjJkNzUxIiwiZXhwIjoxODIxNzM4NTczfQ.oUi3IR6CvMsfoqknb9Dz6zxejIGkliszo01F30ha5Zk
+
+# ===== Robinhood Chain =====
+CHAIN_ID=4663
+RPC_URL=https://rpc.mainnet.chain.robinhood.com
+EXPLORER_URL=https://robinhoodchain.blockscout.com
+
+# ===== Pons launchpad =====
+PONS_FACTORY=0x7eD598BcEf8bd9Edd8C97A195C6d13f40801EC7e
+PONS_FEE_ESCROW=0xd3AFEB2a57f70eF218Aa82451c51B2fb0416Ac9e
+PONS_LAUNCH_CONFIG_ID=0
+# creator tax taken on every trade, 100 = 1%, maximum 1000 (10%)
+CREATOR_TAX_BPS=100
+BUYBACK_ENABLED=false
+
+# ===== Wallets (0x-prefixed private keys, keep this file off GitHub) =====
+# pays the launch fee and is the coin creator; must be whitelisted by Pons and hold ETH
+LAUNCHER_PRIVATE_KEY=
+# where creator fees go; leave empty to use the launcher wallet
+CREATOR_FEE_RECIPIENT=
+# only used by `npm run fees:pay`
+PAYOUT_PRIVATE_KEY=
+
+# ===== Safety =====
+DRY_RUN=true
+MAX_LAUNCHES_PER_USER_PER_DAY=3
+MAX_LAUNCHES_PER_DAY=50
+POLL_SECONDS=30

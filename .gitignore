@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# bot secrets
+bot/.env
+bot/node_modules/
+
+# Project-local dependency download cache
+.npm-cache/
