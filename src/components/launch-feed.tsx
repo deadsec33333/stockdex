@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { getSupabase } from '@/lib/supabase';
+import { getSupabase, T } from '@/lib/supabase';
 import { date } from '@/lib/format';
 import type { Launch, LaunchPage, Pair, Result } from '@/lib/types';
 import { CoinImage, EmptyState } from './ui';
@@ -20,7 +20,7 @@ export function LaunchFeed({ result, pairs = [], explore = false, page = 1 }: { 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>; const db = getSupabase(); if (!db) return;
     const refresh = () => { clearTimeout(timer); timer = setTimeout(() => router.refresh(), 300); };
-    const channel = db.channel('live-launch-feed').on('postgres_changes', { event: '*', schema: 'public', table: 'launches', filter: 'status=eq.live' }, refresh).subscribe(status => { setLive(status === 'SUBSCRIBED'); if (status === 'SUBSCRIBED') refresh(); });
+    const channel = db.channel('live-launch-feed').on('postgres_changes', { event: '*', schema: 'public', table: T('launches'), filter: 'status=eq.live' }, refresh).subscribe(status => { setLive(status === 'SUBSCRIBED'); if (status === 'SUBSCRIBED') refresh(); });
     // Polling also repairs missed events after a network interruption.
     const poll = setInterval(() => { if (document.visibilityState === 'visible') router.refresh(); }, 60000);
     return () => { clearTimeout(timer); clearInterval(poll); void db.removeChannel(channel); };

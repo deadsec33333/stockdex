@@ -14,6 +14,18 @@ What changed under the hood:
 | Explorer | Solscan | robinhoodchain.blockscout.com |
 | Payouts | SOL | ETH |
 
+## Putting the site online
+
+Push this folder to its own GitHub repo, import that repo on Vercel, press Deploy. Nothing
+else: no environment variables, no settings. The brand name, bot handle, Supabase URL and
+public key are all built in, and the database tables already exist.
+
+The site shares one Supabase project with the Solana build. Its tables carry a `pons_`
+prefix (`pons_launches`, `pons_public_launches`, and so on), so the two never see each
+other's data. To move it to its own project later, run the two files in
+`bot/supabase/migrations/` there and set `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_URL` for the bot.
+
 ## Before it can launch anything
 
 1. **A wallet on Robinhood Chain** with some ETH. Put its private key in
@@ -22,10 +34,9 @@ What changed under the hood:
 2. **A sanity check before each launch.** The bot reads the launch fee, the wallet balance
    and the pair-token approval off the factory and simulates the call, so a bad setup
    costs nothing and tells you why in plain words.
-3. **Its own Supabase project.** The tables are shaped differently from the Solana build,
-   so do not point both at the same database. Run `bot/supabase/migrations/001_init.sql`
-   then `002_seed_stocks.sql`.
-4. **Its own X account**, or the two bots answer the same posts.
+3. **The Supabase service role key** in `bot/env-values.txt`. Same project as the Solana
+   build, already filled in.
+4. Only one bot running at a time, since both use the @stockdexapp account.
 
 ## Running it
 
@@ -55,4 +66,3 @@ npm run fees:pay            # send the planned payouts
   which ones those are, and the bot refuses the rest instead of failing mid-launch.
 - Contract addresses in `env-values.txt` come from docs.ponsfamily.com. Check them there
   before the first live launch.
-# stockdex

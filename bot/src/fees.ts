@@ -10,7 +10,7 @@ import { formatEther, parseEther, type Address } from 'viem';
 import { config } from './config.js';
 import { publicClient, wallet, txUrl } from './chain.js';
 import { claimCreatorFees } from './pons.js';
-import { db } from './db.js';
+import { db, t } from './db.js';
 
 const MIN_SHARE_ETH = 0.0002;
 
@@ -37,7 +37,7 @@ async function isWallet(address: Address) {
 }
 
 async function plan(totalEth: number) {
-  const { data: coins } = await db.from('launches').select('id, ticker, token_address').eq('status', 'live');
+  const { data: coins } = await db.from(t('launches')).select('id, ticker, token_address').eq('status', 'live');
   if (!coins?.length) return console.log('no live coins');
   const perCoin = totalEth / coins.length;
 
@@ -55,23 +55,23 @@ async function plan(totalEth: number) {
         amount_eth: +(perCoin * Number(h.amount) / Number(supply)).toFixed(8),
       }))
       .filter(r => r.amount_eth >= MIN_SHARE_ETH);
-    if (rows.length) await db.from('payouts').insert(rows);
+    if (rows.length) await db.from(t('payouts')).insert(rows);
     console.log(`$${c.ticker}: ${rows.length} holders planned, ${perCoin.toFixed(5)} ETH`);
   }
 }
 
 async function pay() {
   const { account, client } = wallet(config.payoutKey());
-  const { data: rows } = await db.from('payouts').select('*').eq('status', 'planned').limit(500);
+  const { data: rows } = await db.from(t('payouts')).select('*').eq('status', 'planned').limit(500);
   for (const r of rows ?? []) {
     try {
       const hash = await client.sendTransaction({
         account, chain: null, to: r.holder as Address, value: parseEther(String(r.amount_eth)),
       });
       await publicClient.waitForTransactionReceipt({ hash });
-      await db.from('payouts').update({ status: 'sent', tx_hash: hash }).eq('id', r.id);
+      await db.from(t('payouts')).update({ status: 'sent', tx_hash: hash }).eq('id', r.id);
     } catch (e: any) {
-      await db.from('payouts').update({ status: 'failed' }).eq('id', r.id);
+      await db.from(t('payouts')).update({ status: 'failed' }).eq('id', r.id);
       console.error(`payout ${r.id} failed: ${e.message}`);
     }
   }
@@ -81,7 +81,7 @@ async function pay() {
 const [cmd, arg] = process.argv.slice(2);
 if (cmd === 'claim') {
   const { hash, amount } = await claimCreatorFees();
-  await db.from('fee_claims').insert({ tx_hash: hash, claimed_eth: Number(formatEther(amount)) });
+  await db.from(t('fee_claims')).insert({ tx_hash: hash, claimed_eth: Number(formatEther(amount)) });
   console.log(`claimed ${formatEther(amount)} ETH, ${txUrl(hash)}`);
 } else if (cmd === 'plan') {
   const eth = Number(arg);

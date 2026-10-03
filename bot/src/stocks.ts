@@ -5,7 +5,7 @@ import type { Address } from 'viem';
 import { config } from './config.js';
 import { publicClient } from './chain.js';
 import { factoryAbi } from './pons.js';
-import { db } from './db.js';
+import { db, t } from './db.js';
 
 type Asset = {
   tokenSymbol?: string; tokenName?: string; name?: string; status?: string;
@@ -37,7 +37,7 @@ for (const a of list) {
   const ponsApproved = await approved(address);
   if (ponsApproved) usable++;
 
-  await db.from('stocks').upsert({
+  await db.from(t('stocks')).upsert({
     symbol,
     name: (a.tokenName ?? a.name ?? symbol).replace(/\s*•\s*Robinhood Token$/i, ''),
     address,

@@ -25,7 +25,8 @@ export const config = {
     accessSecret: () => req('X_ACCESS_SECRET'),
     replyEnabled: bool('X_REPLY_ENABLED', false),
   },
-  supabase: { url: () => req('SUPABASE_URL'), key: () => req('SUPABASE_SERVICE_ROLE_KEY') },
+  // shared with the Solana build; the Pons tables carry a pons_ prefix
+  supabase: { url: () => opt('SUPABASE_URL', 'https://woidhlyawfsueclegdju.supabase.co'), key: () => req('SUPABASE_SERVICE_ROLE_KEY') },
   pinataJwt: () => req('PINATA_JWT'),
 
   // Robinhood Chain + the Pons launchpad

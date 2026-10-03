@@ -3,7 +3,7 @@
 -- These addresses come from Robinhood's own asset API. Run `npm run stocks:sync` after
 -- this migration: it refreshes the list from the API and marks which ones Pons actually
 -- accepts as a pair token, so nothing goes live against an address the bot cannot use.
-insert into stocks (symbol, name, address) values
+insert into pons_stocks (symbol, name, address) values
  ('AAPL','Apple','0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9'),
  ('TSLA','Tesla','0x322F0929c4625eD5bAd873c95208D54E1c003b2d'),
  ('NVDA','Nvidia','0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC'),
